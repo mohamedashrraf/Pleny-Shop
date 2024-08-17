@@ -1,3 +1,9 @@
+# Notes
+
+- Application used Angular 17 with no styling Framework
+- authentication handled be services and NgRx
+- used SASS/SCSS
+
 # App
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.

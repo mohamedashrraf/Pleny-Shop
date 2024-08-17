@@ -1,0 +1,37 @@
+<section class="login">
+    <div class="logo">
+        <img src="assets/images/logoLogin.svg" alt="Logo Login">
+    </div>
+    <div>
+        <h1>
+            Log in to your account
+        </h1>
+        <p>
+            Welcome back! Please enter your details.
+        </p>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class="inputs">
+          @if (InvalidUserError) {
+            <div>
+                <span class="err-msg">Invalid username or password</span>
+            </div>
+          }
+            <div>
+                <label for="email">E-mail</label>
+                <input type="email" placeholder="Enter Your Email" id="email" formControlName="username">
+                @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+                <span class="err-msg">Username is required</span>
+                }
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" placeholder="Enter Your password" id="password" formControlName="password">
+                @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                <span class="err-msg" >Password is required</span>
+                }
+            </div>
+            <button class="sign-btn">Sign in</button>
+        </div>
+    </form>
+</section>

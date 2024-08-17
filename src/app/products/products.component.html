@@ -1,0 +1,154 @@
+<section class="products-page">
+  <div class="breadcrumb">
+    <h2>{{ searchTerm }}</h2>
+    <div>
+      <span>Home / </span>
+      <span>Products </span>
+      @if (categoryName) {
+      <span>/ {{ categoryName }} </span>
+      } @if (searchTerm) {
+      <span>/ {{ searchTerm }} </span>
+      }
+    </div>
+  </div>
+  <div class="main">
+    <aside>
+      <h2>Products</h2>
+      <ul>
+        <li>
+          <label [for]="'all'">
+            <input
+              type="radio"
+              name="category"
+              class="custom-radio"
+              [id]="'all'"
+              (ngModelChange)="getAllProducts()"
+              [(ngModel)]="categoryName"
+            />
+            <span class="custom-radio"></span>
+            All
+          </label>
+        </li>
+        @for (category of allCategories; track $index) {
+        <li>
+          <label [for]="category.name">
+            <input
+              type="radio"
+              name="category"
+              class="custom-radio"
+              [value]="category.slug"
+              [(ngModel)]="categoryName"
+              [id]="category.name"
+              (ngModelChange)="getProductsByCategory(category.slug)"
+            />
+            <span class="custom-radio"></span>
+            {{ category.name }}
+          </label>
+        </li>
+        }
+      </ul>
+    </aside>
+    <section class="products">
+      @if (!isEmpty) {
+      <div
+
+        style="display: flex; justify-content: space-between; padding: 10px"
+      >
+        <span style="color: #008b8b; font-weight: bold;"> ({{ this.total }}) Products Found </span>
+      </div>
+      } @if (!isEmpty) {
+      <div class="products-container">
+        @for (product of allProducts; track $index) {
+        <div class="card">
+          <img src="{{ product.images[0] }}" alt="product-image" />
+          <h3 class="text-header">
+            {{ product?.title }}
+          </h3>
+          <p>
+            {{ product?.description?.slice(0, 50) }}
+          </p>
+          <span class="discount"> -{{ product?.discountPercentage }}% </span>
+          <div class="price">
+            <del class="text-header"> {{ product?.price }} USD </del>
+            <span class="text-header">
+              {{
+                toFixedTwo(
+                  product.price -
+                    (product.price * product.discountPercentage) / 100
+                )
+              }}
+              USD
+            </span>
+          </div>
+          <p>
+            <span>Brand</span> :
+            <span class="text-header">{{ product?.brand }}</span>
+          </p>
+          <p>
+            <span>category</span> :
+            <span class="text-header">{{ product?.category }}</span>
+          </p>
+          <p>
+            <span>In Stock</span> :
+            <span class="text-header">{{ product?.stock }}</span>
+          </p>
+          <p
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: end;
+              color: rgba(244, 176, 0, 1);
+              font-weight: 700;
+            "
+          >
+            <span class="material-symbols-outlined star"> star </span>
+            {{ product?.rating }}
+            <span class="minimum-order-quantity">
+              ({{ product?.minimumOrderQuantity }})
+            </span>
+          </p>
+          <button class="add-to-cart" (click)="addToCart(product)">
+            {{ "Add To Cart" | uppercase }}
+          </button>
+        </div>
+        }
+      </div>
+      } @if (isEmpty) {
+      <div style="color: #008b8b; font-weight: bold;">{{ "No Products Found" | uppercase }}...</div>
+      }
+      @if (allProducts.length > 0) {
+      <div class="pagination">
+        <span
+          class="material-symbols-outlined"
+          (click)="goToPreviousPage()"
+          [class.disabled]="currentPage === 1"
+        >
+        <img style="width: 29px; transform: scaleX(-1);" src="assets/images/rightArrow.svg" alt="">
+        </span>
+        @for (item of paginationNumbers; track $index) {
+        <span class="pagination-item">
+          <span
+            class="pagination-link"
+            [ngClass]="{ active: item === currentPage }"
+            (click)="changePage(item)"
+          >
+            @if (item !== -1) {
+            <ng-container>
+              {{ item }}
+            </ng-container>
+            } @else {...}
+          </span>
+        </span>
+        }
+        <span
+          class="material-symbols-outlined"
+          (click)="goToNextPage()"
+          [class.disabled]="currentPage === totalPages"
+        >
+          <img style="width: 29px;" src="assets/images/rightArrow.svg" alt="">
+        </span>
+      </div>
+      }
+    </section>
+  </div>
+</section>

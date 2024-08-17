@@ -1,0 +1,48 @@
+<nav>
+    <ul class="menuItems">
+        <li>
+            <img href="/products" src="assets/images/logo.svg"  alt="Logo">
+            @if (loggedIn) {
+            <a href="/products" *ngIf="">Home</a>
+            }
+        </li>
+        <div class="rightMenu">
+          @if (loggedIn) {
+            <li >
+                <form (input)="search()">
+                    <div class="input-container">
+                        <span class="icon">
+                        <img  src="assets/images/search.svg" alt="search">
+                        </span>
+                        <input type="text" placeholder="Search" class="search-input" name="searchTerm" [(ngModel)]="searchTerm">
+                    </div>
+                </form>
+            </li>
+          }
+          @if (loggedIn) {
+            <li class="icon-cart" style="cursor: pointer;">
+                <img src="assets/images/cart.svg" alt="cart">
+                <span class="badge">
+                    {{noOfNumCart}}
+                </span>
+            </li>
+          }
+            <li>
+              @if (loggedIn) {
+                <a style="cursor: pointer;">Account</a>
+              }
+            </li>
+
+            <li>
+              @if (!loggedIn) {
+                <a [routerLink]="['/login']" >Log in</a>
+              }
+            </li>
+            <li>
+              @if (loggedIn) {
+                <a (click)="Logout()" class="cursor-pointer">Logout</a>
+              }
+            </li>
+        </div>
+    </ul>
+</nav>
